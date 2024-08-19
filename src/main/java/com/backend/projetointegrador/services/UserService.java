@@ -19,6 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public List<UserResponseDTO> findAll() {
+        //TODO add pagination
         return userRepository.findAll().stream().map(user -> UserMapper.toResponseDTO(user)).toList();
     }
 

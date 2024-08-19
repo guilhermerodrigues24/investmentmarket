@@ -11,6 +11,6 @@ public class ResourceNotFoundException extends RuntimeException {
     }
 
     public ResourceNotFoundException(Class entityClass, String complement) {
-        super("Resource of type " + entityClass.getSimpleName() + "not found. " + complement);
+        super("Resource of type " + entityClass.getSimpleName() + " not found. " + complement);
     }
 }

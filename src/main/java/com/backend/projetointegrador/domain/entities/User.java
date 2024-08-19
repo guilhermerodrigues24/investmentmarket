@@ -27,6 +27,12 @@ public class User implements Serializable {
     private String email;
     private String password;
 
+    public User(Long id, String email, String password) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+    }
+
     //region Equals & Hashcode
     @Override
     public boolean equals(Object o) {
