@@ -2,6 +2,7 @@ package com.backend.projetointegrador.services;
 
 import com.backend.projetointegrador.domain.dtos.UserRequestDTO;
 import com.backend.projetointegrador.domain.dtos.UserResponseDTO;
+import com.backend.projetointegrador.domain.entities.Role;
 import com.backend.projetointegrador.domain.entities.User;
 import com.backend.projetointegrador.domain.mappers.UserMapper;
 import com.backend.projetointegrador.repositories.UserRepository;
@@ -18,6 +19,8 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
 
+    private final RoleService roleService;
+
     public List<UserResponseDTO> findAll() {
         //TODO add pagination
         return userRepository.findAll().stream().map(user -> UserMapper.toResponseDTO(user)).toList();
@@ -28,12 +31,13 @@ public class UserService {
         return UserMapper.toResponseDTO(user);
     }
 
-    public UserResponseDTO create(UserRequestDTO dto) {
-        User user = new User();
-
-        user.setEmail(dto.email());
+    public UserResponseDTO create(UserRequestDTO dto, String authority) {
+        Role role = roleService.findByAuthority(authority);
         //TODO add crypt to password
-        user.setPassword(dto.password());
+        User user = new User(null,
+                dto.email(),
+                dto.password(),
+                role);
 
         return UserMapper.toResponseDTO(userRepository.save(user));
     }
@@ -56,6 +60,12 @@ public class UserService {
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    public UserResponseDTO findByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(User.class, "email: " + email));
+        return UserMapper.toResponseDTO(user);
     }
 
     User findEntityById(Long id) {

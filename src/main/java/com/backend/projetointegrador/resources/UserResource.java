@@ -38,7 +38,7 @@ public class UserResource {
 
     @PostMapping
     public ResponseEntity<UserResponseDTO> create(@RequestBody UserRequestDTO userRequestDTO) throws URISyntaxException {
-        UserResponseDTO responseDTO = userService.create(userRequestDTO);
+        UserResponseDTO responseDTO = userService.create(userRequestDTO, "ADMIN");
         return ResponseEntity.created(new URI("/users/" + responseDTO.id())).body(responseDTO);
     }
 
