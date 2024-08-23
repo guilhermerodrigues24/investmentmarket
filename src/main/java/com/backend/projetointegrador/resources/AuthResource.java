@@ -17,9 +17,8 @@ public class AuthResource {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponseDTO> login(@RequestBody UserRequestDTO userRequestDTO) {
-        UserResponseDTO responseDTO = userService.findByEmail(userRequestDTO.email());
-        return ResponseEntity.ok().body(responseDTO);
+    public ResponseEntity<String> login() {
+        return ResponseEntity.ok().body("Logged in");
     }
 
     @PostMapping("/register")

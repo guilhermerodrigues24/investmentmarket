@@ -2,132 +2,49 @@
 	"info": {
 		"_postman_id": "65c9cffb-03da-4a67-a8bc-b34816486fd6",
 		"name": "PI-SD",
+		"description": "# Setup de ambiente\n\nCrie um novo environment\n\nSelecione ele na parte superior direita\n\nFaça a request \"Set env variables\" (ela vai retornar erro, mas criará as variaveis necessárias)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "32891363"
 	},
 	"item": [
 		{
-			"name": "User",
-			"item": [
-				{
-					"name": "FindAll User",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseURL}}/users",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "FindById User",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseURL}}/users/1",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"users",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create User",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n \"email\": \"newuser@mail.com\",\r\n \"password\": \"123456\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseURL}}/users",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update User",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n \"email\": \"updateduser@mail.com\",\r\n \"password\": \"123456\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseURL}}/users/7",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"users",
-								"7"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete User",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{baseURL}}/users/7",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"users",
-								"7"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "Auth",
 			"item": [
 				{
 					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"jwtToken\", pm.response.headers.get('Authorization'));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user1@mail.com",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n \"email\": \"user1@mail.com\",\r\n \"password\": \"123456\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -177,13 +94,155 @@
 			]
 		},
 		{
+			"name": "User",
+			"item": [
+				{
+					"name": "FindAll User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/users",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindById User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/users/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"email\": \"newuser@mail.com\",\r\n \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/users",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"email\": \"updateduser@mail.com\",\r\n \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/users/7",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"users",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{jwtToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/users/7",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"users",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Set env variables",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"pm.environment.set(\"baseURL\", \"http://localhost:8080\");"
+							"pm.environment.set(\"baseURL\", \"http://localhost:8080\");\r",
+							"pm.environment.set(\"jwtToken\", \"\");"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -203,6 +262,28 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
