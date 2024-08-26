@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,9 @@ public class User implements Serializable {
 
     @ManyToOne
     private Role role;
+
+    @OneToOne
+    private Account account;
 
     public User(Long id, String email, String password, Role role) {
         this.id = id;

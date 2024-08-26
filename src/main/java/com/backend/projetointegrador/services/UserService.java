@@ -62,15 +62,14 @@ public class UserService {
         }
     }
 
-    public UserResponseDTO findByEmail(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException(User.class, "email: " + email));
-        return UserMapper.toResponseDTO(user);
-    }
-
     User findEntityById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(User.class, id));
+    }
+
+    public User findEntityByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(User.class, "email: " + email));
     }
 
 }
