@@ -1,5 +1,6 @@
 package com.backend.projetointegrador.resources.exceptions;
 
+import com.backend.projetointegrador.services.exceptions.InvalidArgsException;
 import com.backend.projetointegrador.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,14 @@ public class ResourceExceptionHandler {
     public ResponseEntity<StandardError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
         String error = "Resource not found";
         HttpStatus status = HttpStatus.NOT_FOUND;
+        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(InvalidArgsException.class)
+    public ResponseEntity<StandardError> invalidArgs(InvalidArgsException e, HttpServletRequest request) {
+        String error = "Invalid arguments";
+        HttpStatus status = HttpStatus.NOT_ACCEPTABLE;
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }

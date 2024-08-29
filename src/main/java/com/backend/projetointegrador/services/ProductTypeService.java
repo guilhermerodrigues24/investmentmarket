@@ -1,52 +1,68 @@
 package com.backend.projetointegrador.services;
 
+import com.backend.projetointegrador.domain.dtos.ProductTypeRequestDTO;
+import com.backend.projetointegrador.domain.dtos.ProductTypeResponseDTO;
 import com.backend.projetointegrador.domain.entities.ProductType;
+import com.backend.projetointegrador.domain.mappers.ProductTypeMapper;
 import com.backend.projetointegrador.repositories.ProductTypeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.backend.projetointegrador.services.exceptions.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ProductTypeService {
+    private final ProductTypeRepository productTypeRepository;
 
-    @Autowired
-    private ProductTypeRepository productTypeRepository;
-
-    public List<ProductType> findAll() {
-        return productTypeRepository.findAll();
+    public List<ProductTypeResponseDTO> findAll() {
+        return productTypeRepository.findAll().stream()
+                .map(entity -> ProductTypeMapper.toResponseDTO(entity)).toList();
     }
 
-    public ProductType findById(Long id) {
-        Optional<ProductType> productType = productTypeRepository.findById(id);
-        return productType.orElse(null);
+    public ProductTypeResponseDTO findById(Long id) {
+        ProductType productType = findEntityById(id);
+        return ProductTypeMapper.toResponseDTO(productType);
     }
 
     @Transactional
-    public ProductType create(ProductType productType) {
+    public ProductTypeResponseDTO create(ProductTypeRequestDTO requestDTO) {
+        ProductType productType = new ProductType();
+        productType.setName(requestDTO.name());
+        productType.setPercentage(requestDTO.percentage());
+
         productType = productTypeRepository.save(productType);
-        return productType;
+        return ProductTypeMapper.toResponseDTO(productType);
     }
 
     @Transactional
-    public ProductType update(ProductType productType) {
-        ProductType newProductType = findById(productType.getId());
-        newProductType.setName(productType.getName());
-        return productTypeRepository.save(newProductType);
+    public ProductTypeResponseDTO update(Long id, ProductTypeRequestDTO requestDTO) {
+        ProductType productType = findEntityById(id);
+
+        productType.setName(requestDTO.name());
+        productType.setPercentage(requestDTO.percentage());
+        productType = productTypeRepository.save(productType);
+
+        return ProductTypeMapper.toResponseDTO(productType);
     }
 
-    public Optional<ProductType> deleteById(Long id) {
-        findById(id);
+    public void delete(Long id) {
         try {
             productTypeRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new RuntimeException("");
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(ProductType.class, id);
+        } catch (DataIntegrityViolationException e) {
+            throw new RuntimeException(e.getMessage());
         }
-        return productTypeRepository.findById(id);
     }
 
+    ProductType findEntityById(Long id) {
+        return productTypeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ProductType.class, id));
+    }
 
 }
