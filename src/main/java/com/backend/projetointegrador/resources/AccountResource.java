@@ -5,6 +5,7 @@ import com.backend.projetointegrador.domain.dtos.AccountResponseDTO;
 import com.backend.projetointegrador.services.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -30,8 +31,8 @@ public class AccountResource {
     }
 
     @PostMapping
-    public ResponseEntity<AccountResponseDTO> create(@RequestBody AccountRequestDTO accountRequestDTO) throws URISyntaxException {
-        AccountResponseDTO responseDTO = accountService.create(accountRequestDTO);
+    public ResponseEntity<AccountResponseDTO> create(@RequestBody AccountRequestDTO accountRequestDTO, Authentication authentication) throws URISyntaxException {
+        AccountResponseDTO responseDTO = accountService.create(accountRequestDTO, authentication);
         return ResponseEntity.created(new URI("/accounts/" + responseDTO.id())).body(responseDTO);
     }
 

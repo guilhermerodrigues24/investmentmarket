@@ -30,7 +30,7 @@ public class Account implements Serializable {
     private String document;
     private Float balance;
 
-    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToOne
     private User user;
 
     public Account(Long id, String name, String document, Float balance, User user) {

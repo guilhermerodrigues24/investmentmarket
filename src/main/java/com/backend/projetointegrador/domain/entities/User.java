@@ -1,6 +1,7 @@
 package com.backend.projetointegrador.domain.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,7 +33,7 @@ public class User implements Serializable {
     @ManyToOne
     private Role role;
 
-    @OneToOne
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
     private Account account;
 
     public User(Long id, String email, String password, Role role) {

@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/product-types")
 @RequiredArgsConstructor
 public class ProductTypeResource {
     private final ProductTypeService productTypeService;
@@ -32,7 +32,7 @@ public class ProductTypeResource {
     @PostMapping
     public ResponseEntity<ProductTypeResponseDTO> create(@RequestBody ProductTypeRequestDTO productTypeRequestDTO) throws URISyntaxException {
         ProductTypeResponseDTO responseDTO = productTypeService.create(productTypeRequestDTO);
-        return ResponseEntity.created(new URI("/products/" + responseDTO.id())).body(responseDTO);
+        return ResponseEntity.created(new URI("/product-types/" + responseDTO.id())).body(responseDTO);
     }
 
     @PutMapping("/{id}")

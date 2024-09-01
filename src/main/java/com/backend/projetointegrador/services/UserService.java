@@ -6,6 +6,7 @@ import com.backend.projetointegrador.domain.entities.Role;
 import com.backend.projetointegrador.domain.entities.User;
 import com.backend.projetointegrador.domain.mappers.UserMapper;
 import com.backend.projetointegrador.repositories.UserRepository;
+import com.backend.projetointegrador.security.SecurityConfiguration;
 import com.backend.projetointegrador.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final SecurityConfiguration securityConfiguration;
 
     private final RoleService roleService;
 
@@ -33,10 +35,10 @@ public class UserService {
 
     public UserResponseDTO create(UserRequestDTO dto, String authority) {
         Role role = roleService.findByAuthority(authority);
-        //TODO add crypt to password
+
         User user = new User(null,
                 dto.email(),
-                dto.password(),
+                securityConfiguration.passwordEncoder().encode(dto.password()),
                 role);
 
         return UserMapper.toResponseDTO(userRepository.save(user));
@@ -46,8 +48,7 @@ public class UserService {
         User user = findEntityById(id);
 
         user.setEmail(dto.email());
-        //TODO add crypt to password
-        user.setPassword(dto.password());
+        user.setPassword(securityConfiguration.passwordEncoder().encode(dto.password()));
 
         return UserMapper.toResponseDTO(userRepository.save(user));
     }

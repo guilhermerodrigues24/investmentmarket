@@ -6,10 +6,12 @@ import com.backend.projetointegrador.domain.entities.Account;
 import com.backend.projetointegrador.domain.entities.User;
 import com.backend.projetointegrador.domain.mappers.AccountMapper;
 import com.backend.projetointegrador.repositories.AccountRepository;
+import com.backend.projetointegrador.services.exceptions.InvalidArgsException;
 import com.backend.projetointegrador.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +33,15 @@ public class AccountService {
         return AccountMapper.toResponseDTO(account);
     }
 
-    public AccountResponseDTO create(AccountRequestDTO dto) {
-        User user = userService.findEntityById().getId();
+    public AccountResponseDTO create(AccountRequestDTO dto, Authentication authentication) {
+        User user = userService.findEntityByEmail(authentication.getName());
+        if (user.getAccount() != null) {
+            throw new InvalidArgsException("User already has an account");
+        }
         Account account = new Account(null,
                 dto.name(),
                 dto.document(),
-                dto.balance(),
+                0f,
                 user);
 
         return AccountMapper.toResponseDTO(accountRepository.save(account));

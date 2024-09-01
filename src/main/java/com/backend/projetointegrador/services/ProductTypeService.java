@@ -51,6 +51,7 @@ public class ProductTypeService {
     }
 
     public void delete(Long id) {
+        // TODO check if there are products with this type and throw an exception
         try {
             productTypeRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
