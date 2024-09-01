@@ -1,10 +1,12 @@
 package com.backend.projetointegrador.configs;
 
 import com.backend.projetointegrador.domain.entities.Account;
+import com.backend.projetointegrador.domain.entities.Product;
 import com.backend.projetointegrador.domain.entities.ProductType;
 import com.backend.projetointegrador.domain.entities.Role;
 import com.backend.projetointegrador.domain.entities.User;
 import com.backend.projetointegrador.repositories.AccountRepository;
+import com.backend.projetointegrador.repositories.ProductRepository;
 import com.backend.projetointegrador.repositories.ProductTypeRepository;
 import com.backend.projetointegrador.repositories.RoleRepository;
 import com.backend.projetointegrador.repositories.UserRepository;
@@ -14,15 +16,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.time.Instant;
+
 @Configuration
 @Profile("dev")
 public class DevConfig implements CommandLineRunner {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
-    private RoleRepository roleRepository;
+    private ProductRepository productRepository;
     @Autowired
     private ProductTypeRepository productTypeRepository;
+    @Autowired
+    private RoleRepository roleRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -48,8 +54,13 @@ public class DevConfig implements CommandLineRunner {
         Account acc3 = accountRepository.save(new Account(null, "Account 3", "123456", 0f, u5));
 
         ProductType pt1 = productTypeRepository.save(new ProductType(null, "Investment", 0.1f));
-        ProductType pt2 = productTypeRepository.save(new ProductType(null, "Savings", 0.05f));
+        ProductType pt2 = productTypeRepository.save(new ProductType(null, "Poupança", 0.05f));
         ProductType pt3 = productTypeRepository.save(new ProductType(null, "Pix Buzzard", 0.2f));
 
+        //TODO Add a util to generate future dates
+        Product p1 = productRepository.save(new Product(null, "Pix Buzzard 30 dias", 184f, Instant.now(), pt3));
+        Product p2 = productRepository.save(new Product(null, "Pix Buzzard 60 dias", 23f, Instant.now(), pt3));
+        Product p3 = productRepository.save(new Product(null, "Pix Buzzard 90 dias", 250f, Instant.now(), pt3));
+        Product p4 = productRepository.save(new Product(null, "Poupança programada 360 dias", 100f, Instant.now(), pt2));
     }
 }
