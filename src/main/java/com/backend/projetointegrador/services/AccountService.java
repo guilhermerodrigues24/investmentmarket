@@ -10,7 +10,6 @@ import com.backend.projetointegrador.services.exceptions.ResourceNotFoundExcepti
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,8 +31,8 @@ public class AccountService {
         return AccountMapper.toResponseDTO(account);
     }
 
-    public AccountResponseDTO create(AccountRequestDTO dto, Authentication authentication) {
-        User user = userService.findEntityByEmail(authentication.getName());
+    public AccountResponseDTO create(AccountRequestDTO dto) {
+        User user = userService.findEntityById().getId();
         Account account = new Account(null,
                 dto.name(),
                 dto.document(),
