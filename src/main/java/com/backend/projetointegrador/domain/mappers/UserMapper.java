@@ -7,7 +7,8 @@ public class UserMapper {
     public static UserResponseDTO toResponseDTO(User user) {
         return new UserResponseDTO(user.getId(),
                 user.getEmail(),
-                user.getRole().getAuthority()
+                user.getRole().getAuthority(),
+                user.getAccount() != null
         );
     }
 }

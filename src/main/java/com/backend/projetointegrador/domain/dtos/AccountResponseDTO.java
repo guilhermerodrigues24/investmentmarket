@@ -4,6 +4,7 @@ public record AccountResponseDTO(
         Long id,
         String name,
         String document,
-        Float balance
+        Float balance,
+        UserResponseDTO user
 ) {
 }
