@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,27 +17,33 @@ import java.time.Instant;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "tb_product")
-public class Product implements Serializable {
+@Table(name = "tb_investment")
+public class Investment implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private Instant dueDate;
-    private Float dailyYield;
+    private Float buyPrice;
+    private Instant buyTime;
+    private Float sellPrice;
+    private Instant sellTime;
 
     @ManyToOne(optional = false)
-    private ProductType productType;
+    private Account account;
+    @ManyToOne(optional = false)
+    private Product product;
 
-    public Product(Long id, String name, Instant dueDate, Float dailyYield, ProductType productType) {
+    public Investment(Long id, Float buyPrice, Instant buyTime, Account account, Product product) {
         this.id = id;
-        this.name = name;
-        this.dueDate = dueDate;
-        this.productType = productType;
-        this.dailyYield = dailyYield;
+        this.buyPrice = buyPrice;
+        this.buyTime = buyTime;
+        this.account = account;
+        this.product = product;
+    }
+
+    public Investment(Long id, Float buyPrice, Account account, Product product) {
+        this(id, buyPrice, Instant.now(), account, product);
     }
 }

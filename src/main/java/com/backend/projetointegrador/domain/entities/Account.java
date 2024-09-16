@@ -26,6 +26,7 @@ public class Account implements Serializable {
     private Long id;
     private String name;
     private String document;
+    @Setter(lombok.AccessLevel.NONE)
     private Float balance;
 
     @OneToOne
@@ -37,5 +38,16 @@ public class Account implements Serializable {
         this.document = document;
         this.balance = balance;
         this.user = user;
+    }
+
+    public void addBalance(Float value) {
+        this.balance += value;
+    }
+
+    public void subtractBalance(Float value) {
+        if (this.balance < value) {
+            throw new RuntimeException("Insufficient balance");
+        }
+        this.balance -= value;
     }
 }

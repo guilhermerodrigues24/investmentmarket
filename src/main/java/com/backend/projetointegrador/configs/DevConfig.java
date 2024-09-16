@@ -1,11 +1,13 @@
 package com.backend.projetointegrador.configs;
 
 import com.backend.projetointegrador.domain.entities.Account;
+import com.backend.projetointegrador.domain.entities.Investment;
 import com.backend.projetointegrador.domain.entities.Product;
 import com.backend.projetointegrador.domain.entities.ProductType;
 import com.backend.projetointegrador.domain.entities.Role;
 import com.backend.projetointegrador.domain.entities.User;
 import com.backend.projetointegrador.repositories.AccountRepository;
+import com.backend.projetointegrador.repositories.InvestmentRepository;
 import com.backend.projetointegrador.repositories.ProductRepository;
 import com.backend.projetointegrador.repositories.ProductTypeRepository;
 import com.backend.projetointegrador.repositories.RoleRepository;
@@ -17,12 +19,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 @Configuration
 @Profile("dev")
 public class DevConfig implements CommandLineRunner {
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private InvestmentRepository investmentRepository;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
@@ -57,10 +62,17 @@ public class DevConfig implements CommandLineRunner {
         ProductType pt2 = productTypeRepository.save(new ProductType(null, "Poupança", 0.05f));
         ProductType pt3 = productTypeRepository.save(new ProductType(null, "Pix Buzzard", 0.2f));
 
-        //TODO Add a util to generate future dates
-        Product p1 = productRepository.save(new Product(null, "Pix Buzzard 30 dias", 184f, Instant.now(), pt3));
-        Product p2 = productRepository.save(new Product(null, "Pix Buzzard 60 dias", 23f, Instant.now(), pt3));
-        Product p3 = productRepository.save(new Product(null, "Pix Buzzard 90 dias", 250f, Instant.now(), pt3));
-        Product p4 = productRepository.save(new Product(null, "Poupança programada 360 dias", 100f, Instant.now(), pt2));
+        Product p1 = productRepository.save(new Product(null, "Pix Buzzard 30 dias", getFutureDate(30), .01f, pt3));
+        Product p2 = productRepository.save(new Product(null, "Pix Buzzard 60 dias", getFutureDate(60), .02f, pt3));
+        Product p3 = productRepository.save(new Product(null, "Pix Buzzard 90 dias", getFutureDate(90), .03f, pt3));
+        Product p4 = productRepository.save(new Product(null, "Poupança programada 360 dias", getFutureDate(360), .03f, pt2));
+
+        Investment i1 = investmentRepository.save(new Investment(null, 100f, Instant.now(), acc1, p1));
+        Investment i2 = investmentRepository.save(new Investment(null, 200f, Instant.now(), acc1, p2));
+        Investment i3 = investmentRepository.save(new Investment(null, 300f, Instant.now(), acc1, p3));
+    }
+
+    private Instant getFutureDate(int days) {
+        return Instant.now().plus(days, ChronoUnit.DAYS);
     }
 }

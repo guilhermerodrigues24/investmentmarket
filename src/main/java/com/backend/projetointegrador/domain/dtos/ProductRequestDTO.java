@@ -4,8 +4,8 @@ import java.time.Instant;
 
 public record ProductRequestDTO(
         String name,
-        Float minimumValue,
         Instant dueDate,
+        Float dailyYield,
         Long productTypeId
 ) {
 }
