@@ -3,21 +3,32 @@ package com.backend.projetointegrador.resources;
 import com.backend.projetointegrador.domain.dtos.ProductRequestDTO;
 import com.backend.projetointegrador.domain.dtos.ProductResponseDTO;
 import com.backend.projetointegrador.services.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
+@RequiredArgsConstructor
 public class ProductResource {
+    private final ProductService productService;
 
-    @Autowired
-    private ProductService service;
-    @Autowired
-    private ProductService productService;
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDTO>> findAll() {
+        List<ProductResponseDTO> responseDTO = productService.findAll();
+        return ResponseEntity.ok().body(responseDTO);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> findById(@PathVariable Long id) {
