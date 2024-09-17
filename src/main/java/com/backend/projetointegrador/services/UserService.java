@@ -63,9 +63,9 @@ public class UserService {
         }
     }
 
-    User findEntityById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(User.class, id));
+    public UserResponseDTO findByEmail(String email) {
+        User user = findEntityByEmail(email);
+        return UserMapper.toResponseDTO(user);
     }
 
     public User findEntityByEmail(String email) {
@@ -73,4 +73,8 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException(User.class, "email: " + email));
     }
 
+    User findEntityById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(User.class, id));
+    }
 }

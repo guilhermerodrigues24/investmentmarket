@@ -5,6 +5,7 @@ import com.backend.projetointegrador.domain.dtos.UserResponseDTO;
 import com.backend.projetointegrador.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +18,9 @@ public class AuthResource {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login() {
-        return ResponseEntity.ok().body("Logged in");
+    public ResponseEntity<UserResponseDTO> login(Authentication authentication) {
+        UserResponseDTO responseDTO = userService.findByEmail(authentication.getName());
+        return ResponseEntity.ok().body(responseDTO);
     }
 
     @PostMapping("/register")

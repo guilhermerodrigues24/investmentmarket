@@ -34,7 +34,7 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
                         .getPayload();
 
                 String username = claims.get("username", String.class);
-                String authorities = claims.get("authorities", String.class);
+                String authorities = (String) claims.get("authorities");
                 Authentication authentication = new UsernamePasswordAuthenticationToken(
                         username,
                         null,
@@ -51,7 +51,7 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         return request.getServletPath().equals("/auth/login");
     }
 }
