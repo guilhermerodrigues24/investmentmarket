@@ -3,13 +3,11 @@ package com.backend.projetointegrador.configs;
 import com.backend.projetointegrador.domain.entities.Account;
 import com.backend.projetointegrador.domain.entities.Investment;
 import com.backend.projetointegrador.domain.entities.Product;
-import com.backend.projetointegrador.domain.entities.ProductType;
 import com.backend.projetointegrador.domain.entities.Role;
 import com.backend.projetointegrador.domain.entities.User;
 import com.backend.projetointegrador.repositories.AccountRepository;
 import com.backend.projetointegrador.repositories.InvestmentRepository;
 import com.backend.projetointegrador.repositories.ProductRepository;
-import com.backend.projetointegrador.repositories.ProductTypeRepository;
 import com.backend.projetointegrador.repositories.RoleRepository;
 import com.backend.projetointegrador.repositories.UserRepository;
 import com.backend.projetointegrador.security.SecurityConfiguration;
@@ -30,8 +28,6 @@ public class DevConfig implements CommandLineRunner {
     private InvestmentRepository investmentRepository;
     @Autowired
     private ProductRepository productRepository;
-    @Autowired
-    private ProductTypeRepository productTypeRepository;
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
@@ -58,14 +54,10 @@ public class DevConfig implements CommandLineRunner {
         Account acc2 = accountRepository.save(new Account(null, "Account 2", "123456", 1000f, u4));
         Account acc3 = accountRepository.save(new Account(null, "Account 3", "123456", 0f, u5));
 
-        ProductType pt1 = productTypeRepository.save(new ProductType(null, "Investment", 0.1f));
-        ProductType pt2 = productTypeRepository.save(new ProductType(null, "Poupança", 0.05f));
-        ProductType pt3 = productTypeRepository.save(new ProductType(null, "Pix Buzzard", 0.2f));
-
-        Product p1 = productRepository.save(new Product(null, "Pix Buzzard 30 dias", getFutureDate(30), .01f, pt3));
-        Product p2 = productRepository.save(new Product(null, "Pix Buzzard 60 dias", getFutureDate(60), .02f, pt3));
-        Product p3 = productRepository.save(new Product(null, "Pix Buzzard 90 dias", getFutureDate(90), .03f, pt3));
-        Product p4 = productRepository.save(new Product(null, "Poupança programada 360 dias", getFutureDate(360), .03f, pt2));
+        Product p1 = productRepository.save(new Product(null, "Pix Buzzard 30 dias", getFutureDate(30), .01f));
+        Product p2 = productRepository.save(new Product(null, "Pix Buzzard 60 dias", getFutureDate(60), .02f));
+        Product p3 = productRepository.save(new Product(null, "Pix Buzzard 90 dias", getFutureDate(90), .03f));
+        Product p4 = productRepository.save(new Product(null, "Poupança programada 360 dias", getFutureDate(360), .03f));
 
         Investment i1 = investmentRepository.save(new Investment(null, 100f, Instant.now(), acc1, p1));
         Investment i2 = investmentRepository.save(new Investment(null, 200f, Instant.now(), acc1, p2));

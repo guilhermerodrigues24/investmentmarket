@@ -5,7 +5,7 @@ import java.time.Instant;
 public record ProductRequestDTO(
         String name,
         Instant dueDate,
-        Float dailyYield,
-        Long productTypeId
-) {
+        Float dailyYield
+)
+{
 }

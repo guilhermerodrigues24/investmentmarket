@@ -3,7 +3,6 @@ package com.backend.projetointegrador.services;
 import com.backend.projetointegrador.domain.dtos.ProductRequestDTO;
 import com.backend.projetointegrador.domain.dtos.ProductResponseDTO;
 import com.backend.projetointegrador.domain.entities.Product;
-import com.backend.projetointegrador.domain.entities.ProductType;
 import com.backend.projetointegrador.domain.mappers.ProductMapper;
 import com.backend.projetointegrador.repositories.ProductRepository;
 import com.backend.projetointegrador.services.exceptions.ResourceNotFoundException;
@@ -20,8 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
-
-    private final ProductTypeService productTypeService;
 
     public List<ProductResponseDTO> findAll() {
         return productRepository.findAll().stream()
@@ -71,12 +68,10 @@ public class ProductService {
     }
 
     private void addDTOValuesToEntity(Product product, ProductRequestDTO requestDTO) {
-        ProductType productType = productTypeService.findEntityById(requestDTO.productTypeId());
 
         product.setName(requestDTO.name());
         product.setDueDate(requestDTO.dueDate());
         product.setDailyYield(requestDTO.dailyYield());
-        product.setProductType(productType);
     }
 
 }

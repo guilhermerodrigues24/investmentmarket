@@ -8,8 +8,7 @@ public class ProductMapper {
         return new ProductResponseDTO(product.getId(),
                 product.getName(),
                 product.getDueDate(),
-                product.getDailyYield(),
-                ProductTypeMapper.toResponseDTO(product.getProductType())
+                product.getDailyYield()
         );
     }
 }

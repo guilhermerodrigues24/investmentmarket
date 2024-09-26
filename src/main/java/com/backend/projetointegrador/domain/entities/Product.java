@@ -31,14 +31,10 @@ public class Product implements Serializable {
     private Instant dueDate;
     private Float dailyYield;
 
-    @ManyToOne(optional = false)
-    private ProductType productType;
-
-    public Product(Long id, String name, Instant dueDate, Float dailyYield, ProductType productType) {
+    public Product(Long id, String name, Instant dueDate, Float dailyYield) {
         this.id = id;
         this.name = name;
         this.dueDate = dueDate;
-        this.productType = productType;
         this.dailyYield = dailyYield;
     }
 }

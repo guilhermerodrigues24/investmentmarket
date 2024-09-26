@@ -6,7 +6,7 @@ public record ProductResponseDTO(
         Long id,
         String name,
         Instant dueDate,
-        Float dailyYield,
-        ProductTypeResponseDTO productType
-) {
+        Float dailyYield
+)
+{
 }
