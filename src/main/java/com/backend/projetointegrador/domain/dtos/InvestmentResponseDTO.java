@@ -9,6 +9,7 @@ public record InvestmentResponseDTO(
         Instant buyTime,
         Float sellPrice,
         Instant sellTime,
-        Boolean isSold
+        Boolean isSold,
+        ProductResponseDTO product
 ) {
 }

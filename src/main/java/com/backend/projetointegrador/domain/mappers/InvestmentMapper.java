@@ -11,7 +11,8 @@ public class InvestmentMapper {
                 investment.getBuyTime(),
                 investment.getSellPrice(),
                 investment.getSellTime(),
-                investment.getIsSold()
+                investment.getIsSold(),
+                ProductMapper.toResponseDTO(investment.getProduct())
         );
     }
 }

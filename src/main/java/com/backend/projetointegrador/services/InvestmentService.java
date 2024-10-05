@@ -29,8 +29,10 @@ public class InvestmentService {
     private final UserService userService;
     private final ProductService productService;
 
-    public List<InvestmentResponseDTO> findAll() {
-        return investmentRepository.findAll().stream()
+    public List<InvestmentResponseDTO> findAll(Authentication authentication) {
+        Long accountId = userService.findEntityByEmail(authentication.getName()).getAccount().getId();
+        return investmentRepository.findByAccountId(accountId)
+                .stream()
                 .peek(investment -> {
                     if (!investment.getIsSold()) {
                         investment.setSellPrice(estimateSellPrice(investment));

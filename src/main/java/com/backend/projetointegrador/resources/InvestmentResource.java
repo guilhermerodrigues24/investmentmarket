@@ -25,8 +25,8 @@ public class InvestmentResource {
     private final InvestmentService investmentService;
 
     @GetMapping
-    public ResponseEntity<List<InvestmentResponseDTO>> findAll() {
-        return ResponseEntity.ok().body(investmentService.findAll());
+    public ResponseEntity<List<InvestmentResponseDTO>> findAll(Authentication authentication) {
+        return ResponseEntity.ok().body(investmentService.findAll(authentication));
     }
 
     @GetMapping("/{id}")
@@ -36,7 +36,8 @@ public class InvestmentResource {
     }
 
     @PostMapping
-    public ResponseEntity<InvestmentResponseDTO> create(@RequestBody InvestmentRequestDTO investmentRequestDTO, Authentication authentication) throws URISyntaxException {
+    public ResponseEntity<InvestmentResponseDTO> create(@RequestBody InvestmentRequestDTO investmentRequestDTO,
+                                                        Authentication authentication) throws URISyntaxException {
         InvestmentResponseDTO responseDTO = investmentService.create(investmentRequestDTO, authentication);
         return ResponseEntity.created(new URI("/investments/" + responseDTO.id())).body(responseDTO);
     }
