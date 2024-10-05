@@ -7,10 +7,11 @@ public class InvestmentMapper {
     public static InvestmentResponseDTO toResponseDTO(Investment investment) {
         return new InvestmentResponseDTO(investment.getId(),
                 investment.getBuyPrice(),
+                investment.getBuyPrice(),
+                investment.getBuyTime(),
                 investment.getSellPrice(),
                 investment.getSellTime(),
-                AccountMapper.toResponseDTO(investment.getAccount()),
-                ProductMapper.toResponseDTO(investment.getProduct())
+                investment.getIsSold()
         );
     }
 }

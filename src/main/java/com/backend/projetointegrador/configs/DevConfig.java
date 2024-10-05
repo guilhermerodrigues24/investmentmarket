@@ -54,14 +54,18 @@ public class DevConfig implements CommandLineRunner {
         Account acc2 = accountRepository.save(new Account(null, "Account 2", "123456", 1000f, u4));
         Account acc3 = accountRepository.save(new Account(null, "Account 3", "123456", 0f, u5));
 
-        Product p1 = productRepository.save(new Product(null, "Pix Buzzard 30 dias", getFutureDate(30), .01f));
-        Product p2 = productRepository.save(new Product(null, "Pix Buzzard 60 dias", getFutureDate(60), .02f));
-        Product p3 = productRepository.save(new Product(null, "Pix Buzzard 90 dias", getFutureDate(90), .03f));
-        Product p4 = productRepository.save(new Product(null, "Poupança programada 360 dias", getFutureDate(360), .03f));
+        Product p1 = productRepository.save(new Product(null, "Pix Buzzard 30 dias", .001f));
+        Product p2 = productRepository.save(new Product(null, "Pix Buzzard 60 dias", .0015f));
+        Product p3 = productRepository.save(new Product(null, "Pix Buzzard 90 dias", .002f));
+        Product p4 = productRepository.save(new Product(null, "Poupança programada 360 dias", .005f));
 
-        Investment i1 = investmentRepository.save(new Investment(null, 100f, Instant.now(), acc1, p1));
-        Investment i2 = investmentRepository.save(new Investment(null, 200f, Instant.now(), acc1, p2));
-        Investment i3 = investmentRepository.save(new Investment(null, 300f, Instant.now(), acc1, p3));
+        Investment i1 = investmentRepository.save(new Investment(null, 100f, getPastDate(10), acc1, p1));
+        Investment i2 = investmentRepository.save(new Investment(null, 200f, getPastDate(4), acc1, p2));
+        Investment i3 = investmentRepository.save(new Investment(null, 300f, getPastDate(2), acc1, p3));
+    }
+
+    private Instant getPastDate(int days) {
+        return Instant.now().minus(days, ChronoUnit.DAYS);
     }
 
     private Instant getFutureDate(int days) {

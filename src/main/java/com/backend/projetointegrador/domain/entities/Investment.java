@@ -29,6 +29,7 @@ public class Investment implements Serializable {
     private Instant buyTime;
     private Float sellPrice;
     private Instant sellTime;
+    private Boolean isSold = false;
 
     @ManyToOne(optional = false)
     private Account account;

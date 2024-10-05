@@ -41,6 +41,12 @@ public class InvestmentResource {
         return ResponseEntity.created(new URI("/investments/" + responseDTO.id())).body(responseDTO);
     }
 
+    @GetMapping("/{id}/sell")
+    public ResponseEntity<InvestmentResponseDTO> sell(@PathVariable Long id) {
+        InvestmentResponseDTO responseDTO = investmentService.sell(id);
+        return ResponseEntity.ok().body(responseDTO);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         investmentService.delete(id);

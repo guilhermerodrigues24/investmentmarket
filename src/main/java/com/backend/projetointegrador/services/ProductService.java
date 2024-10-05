@@ -11,8 +11,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -61,16 +59,8 @@ public class ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException(Product.class, id));
     }
 
-    Float getYieldPercentageInDateRange(Product product, Instant buyTime, Instant sellTime) {
-        sellTime = product.getDueDate().isBefore(sellTime) ? product.getDueDate() : sellTime;
-        Long days = ChronoUnit.DAYS.between(buyTime, sellTime);
-        return product.getDailyYield() * days;
-    }
-
     private void addDTOValuesToEntity(Product product, ProductRequestDTO requestDTO) {
-
         product.setName(requestDTO.name());
-        product.setDueDate(requestDTO.dueDate());
         product.setDailyYield(requestDTO.dailyYield());
     }
 

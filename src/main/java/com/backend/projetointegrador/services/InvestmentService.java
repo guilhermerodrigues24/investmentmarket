@@ -17,24 +17,35 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class InvestmentService {
     private final InvestmentRepository investmentRepository;
-    private final AccountRepository accountRepository;  //TODO this may disappear after adding balance entity
+    private final AccountRepository accountRepository;
 
     private final UserService userService;
     private final ProductService productService;
 
     public List<InvestmentResponseDTO> findAll() {
         return investmentRepository.findAll().stream()
+                .peek(investment -> {
+                    if (!investment.getIsSold()) {
+                        investment.setSellPrice(estimateSellPrice(investment));
+                    }
+                })
                 .map(entity -> InvestmentMapper.toResponseDTO(entity)).toList();
     }
 
     public InvestmentResponseDTO findById(Long id) {
         Investment investment = findEntityById(id);
+
+        if (!investment.getIsSold()) {
+            investment.setSellPrice(estimateSellPrice(investment));
+        }
+
         return InvestmentMapper.toResponseDTO(investment);
     }
 
@@ -65,19 +76,15 @@ public class InvestmentService {
         }
     }
 
-    public InvestmentResponseDTO redeem(Long id) {
+    public InvestmentResponseDTO sell(Long id) {
         Investment investment = findEntityById(id);
-        Product product = investment.getProduct();
+        if (investment.getIsSold()) {
+            throw new InvalidArgsException("Investment already sold");
+        }
 
-        float variationInsideRange = 1 + productService.getYieldPercentageInDateRange(product, investment.getBuyTime(), Instant.now());
-        float sellPrice = Math.max(investment.getBuyPrice() * variationInsideRange, 1f);
-        float administrationTaxes = 0.1f;
-        float companyYieldCut = sellPrice * administrationTaxes; //TODO add this to the company account
-
-        sellPrice -= companyYieldCut;
-
-        investment.setSellPrice(sellPrice);
+        investment.setSellPrice(estimateSellPrice(investment));
         investment.setSellTime(Instant.now());
+        investment.setIsSold(true);
         investment.getAccount().addBalance(investment.getSellPrice());
         investmentRepository.save(investment);
         accountRepository.save(investment.getAccount());
@@ -90,4 +97,9 @@ public class InvestmentService {
                 .orElseThrow(() -> new ResourceNotFoundException(Investment.class, id));
     }
 
+    private Float estimateSellPrice(Investment investment) {
+        Product product = investment.getProduct();
+        long days = ChronoUnit.DAYS.between(investment.getBuyTime(), Instant.now());
+        return investment.getBuyPrice() * (float) Math.pow(1f + product.getDailyYield(), days);
+    }
 }

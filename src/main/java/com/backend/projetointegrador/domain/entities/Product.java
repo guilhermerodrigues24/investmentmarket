@@ -28,13 +28,11 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Instant dueDate;
     private Float dailyYield;
 
-    public Product(Long id, String name, Instant dueDate, Float dailyYield) {
+    public Product(Long id, String name, Float dailyYield) {
         this.id = id;
         this.name = name;
-        this.dueDate = dueDate;
         this.dailyYield = dailyYield;
     }
 }
