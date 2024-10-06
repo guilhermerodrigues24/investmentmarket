@@ -4,6 +4,6 @@ public record UserResponseDTO(
         Long id,
         String email,
         String authority,
-        Boolean hasAccount
+        Long accountId
 ) {
 }
