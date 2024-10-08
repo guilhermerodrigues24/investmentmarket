@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.backend</groupId>
     <artifactId>projetointegrador</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
     <name>Projeto Integrador: Sistemas Distribuidos</name>
     <description>Projeto Integrador: Sistemas Distribuidos</description>
     <url/>
