@@ -14,7 +14,7 @@ FROM openjdk:17-jdk-alpine
 
 WORKDIR /app
 
-COPY --from=build /app/target/* ./app.jar
+COPY --from=build /app/target/projetointegrador*.jar ./app.jar
 
 EXPOSE 8080
 
