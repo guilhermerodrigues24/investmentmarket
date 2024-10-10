@@ -1,11 +1,13 @@
 package com.backend.projetointegrador.configs;
 
 import com.backend.projetointegrador.domain.entities.Account;
+import com.backend.projetointegrador.domain.entities.Balance;
 import com.backend.projetointegrador.domain.entities.Investment;
 import com.backend.projetointegrador.domain.entities.Product;
 import com.backend.projetointegrador.domain.entities.Role;
 import com.backend.projetointegrador.domain.entities.User;
 import com.backend.projetointegrador.repositories.AccountRepository;
+import com.backend.projetointegrador.repositories.BalanceRepository;
 import com.backend.projetointegrador.repositories.InvestmentRepository;
 import com.backend.projetointegrador.repositories.ProductRepository;
 import com.backend.projetointegrador.repositories.RoleRepository;
@@ -42,17 +44,16 @@ public class DevConfig implements CommandLineRunner {
 
         String password = securityConfiguration.passwordEncoder().encode("123456");
 
-        User u1 = userRepository.save(new User(null, "user1@mail.com", password, adminRole));
-        User u2 = userRepository.save(new User(null, "user2@mail.com", password, adminRole));
-
+        User u1 = userRepository.save(new User(null, "user1@mail.com", password, clientRole));
+        User u2 = userRepository.save(new User(null, "user2@mail.com", password, clientRole));
         User u3 = userRepository.save(new User(null, "user3@mail.com", password, clientRole));
         User u4 = userRepository.save(new User(null, "user4@mail.com", password, clientRole));
         User u5 = userRepository.save(new User(null, "user5@mail.com", password, clientRole));
         User u6 = userRepository.save(new User(null, "user6@mail.com", password, clientRole));
 
-        Account acc1 = accountRepository.save(new Account(null, "Account 1", "123456", 500f, u3));
-        Account acc2 = accountRepository.save(new Account(null, "Account 2", "123456", 1000f, u4));
-        Account acc3 = accountRepository.save(new Account(null, "Account 3", "123456", 0f, u5));
+        Account acc1 = accountRepository.save(new Account(null, "Cliente da Silva", "123456", 1800f, u3));
+        Account acc2 = accountRepository.save(new Account(null, "Ronilso Junior Junior", "123456", 4200f, u4));
+        Account acc3 = accountRepository.save(new Account(null, "Account 3", "123456", 876f, u5));
 
         Product p1 = productRepository.save(new Product(null, "Pix Buzzard 30 dias", .001f));
         Product p2 = productRepository.save(new Product(null, "Pix Buzzard 60 dias", .0015f));

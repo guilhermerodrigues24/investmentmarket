@@ -24,7 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InvestmentService {
     private final InvestmentRepository investmentRepository;
-    private final AccountRepository accountRepository;
 
     private final UserService userService;
     private final ProductService productService;
@@ -58,13 +57,10 @@ public class InvestmentService {
         }
 
         Product product = productService.findEntityById(requestDTO.productId());
-
+        account.getBalance().subtractBalance(requestDTO.buyPrice());
         Investment investment = new Investment(null, requestDTO.buyPrice(), account, product);
-        account.subtractBalance(requestDTO.buyPrice());
 
         investment = investmentRepository.save(investment);
-        accountRepository.save(account);
-
         return InvestmentMapper.toResponseDTO(investment);
     }
 
@@ -87,9 +83,8 @@ public class InvestmentService {
         investment.setSellPrice(estimateSellPrice(investment));
         investment.setSellTime(Instant.now());
         investment.setIsSold(true);
-        investment.getAccount().addBalance(investment.getSellPrice());
+        investment.getAccount().getBalance().addBalance(investment.getSellPrice());
         investmentRepository.save(investment);
-        accountRepository.save(investment.getAccount());
 
         return InvestmentMapper.toResponseDTO(investment);
     }
