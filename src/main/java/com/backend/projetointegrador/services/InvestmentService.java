@@ -1,7 +1,8 @@
 package com.backend.projetointegrador.services;
 
-import com.backend.projetointegrador.domain.dtos.InvestmentRequestDTO;
+import com.backend.projetointegrador.domain.dtos.InvestmentBuyRequestDTO;
 import com.backend.projetointegrador.domain.dtos.InvestmentResponseDTO;
+import com.backend.projetointegrador.domain.dtos.InvestmentSellRequestDTO;
 import com.backend.projetointegrador.domain.entities.Account;
 import com.backend.projetointegrador.domain.entities.Investment;
 import com.backend.projetointegrador.domain.entities.Product;
@@ -49,8 +50,17 @@ public class InvestmentService {
         return InvestmentMapper.toResponseDTO(investment);
     }
 
-    //TODO fix naming for something like invest
-    public InvestmentResponseDTO create(InvestmentRequestDTO requestDTO, Authentication authentication) {
+    public void delete(Long id) {
+        try {
+            investmentRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(Investment.class, id);
+        } catch (DataIntegrityViolationException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public InvestmentResponseDTO buy(InvestmentBuyRequestDTO requestDTO, Authentication authentication) {
         Account account = userService.findEntityByEmail(authentication.getName()).getAccount();
         if (account == null) {
             throw new InvalidArgsException("User does not have an account");
@@ -64,18 +74,9 @@ public class InvestmentService {
         return InvestmentMapper.toResponseDTO(investment);
     }
 
-    public void delete(Long id) {
-        try {
-            investmentRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException(Investment.class, id);
-        } catch (DataIntegrityViolationException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
-    public InvestmentResponseDTO sell(Long id) {
-        Investment investment = findEntityById(id);
+    //TODO add validation on endpoint to check if investment belongs to user
+    public InvestmentResponseDTO sell(InvestmentSellRequestDTO requestDTO) {
+        Investment investment = findEntityById(requestDTO.investmentId());
         if (investment.getIsSold()) {
             throw new InvalidArgsException("Investment already sold");
         }

@@ -1,7 +1,8 @@
 package com.backend.projetointegrador.resources;
 
-import com.backend.projetointegrador.domain.dtos.InvestmentRequestDTO;
+import com.backend.projetointegrador.domain.dtos.InvestmentBuyRequestDTO;
 import com.backend.projetointegrador.domain.dtos.InvestmentResponseDTO;
+import com.backend.projetointegrador.domain.dtos.InvestmentSellRequestDTO;
 import com.backend.projetointegrador.services.InvestmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,22 +36,22 @@ public class InvestmentResource {
         return ResponseEntity.ok().body(responseDTO);
     }
 
-    @PostMapping
-    public ResponseEntity<InvestmentResponseDTO> create(@RequestBody InvestmentRequestDTO investmentRequestDTO,
-                                                        Authentication authentication) throws URISyntaxException {
-        InvestmentResponseDTO responseDTO = investmentService.create(investmentRequestDTO, authentication);
-        return ResponseEntity.created(new URI("/investments/" + responseDTO.id())).body(responseDTO);
-    }
-
-    @GetMapping("/{id}/sell")
-    public ResponseEntity<InvestmentResponseDTO> sell(@PathVariable Long id) {
-        InvestmentResponseDTO responseDTO = investmentService.sell(id);
-        return ResponseEntity.ok().body(responseDTO);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         investmentService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/buy")
+    public ResponseEntity<InvestmentResponseDTO> buy(@RequestBody InvestmentBuyRequestDTO investmentBuyRequestDTO,
+                                                     Authentication authentication) throws URISyntaxException {
+        InvestmentResponseDTO responseDTO = investmentService.buy(investmentBuyRequestDTO, authentication);
+        return ResponseEntity.created(new URI("/investments/" + responseDTO.id())).body(responseDTO);
+    }
+
+    @PostMapping("/sell")
+    public ResponseEntity<InvestmentResponseDTO> sell(@RequestBody InvestmentSellRequestDTO investmentSellRequestDTO) {
+        InvestmentResponseDTO responseDTO = investmentService.sell(investmentSellRequestDTO);
+        return ResponseEntity.ok().body(responseDTO);
     }
 }
