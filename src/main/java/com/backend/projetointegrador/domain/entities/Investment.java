@@ -49,6 +49,7 @@ public class Investment implements Serializable {
         this(id, buyPrice, Instant.now(), account, product);
     }
 
+    //region equals/hashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,4 +63,5 @@ public class Investment implements Serializable {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+    //endregion
 }

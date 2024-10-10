@@ -22,7 +22,18 @@ public class BalanceService {
 
     public BalanceResponseDTO operate(Authentication authentication, BalanceRequestDTO requestDTO) {
         Balance balance = findEntityByAccountUserEmail(authentication.getName());
-        //TODO add operation and maybe the enum
+        switch (requestDTO.operation()) {
+            case "deposit":
+                balance.addBalance(requestDTO.value());
+                break;
+            case "withdraw":
+                balance.subtractBalance(requestDTO.value());
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid operation");
+        }
+
+        balanceRepository.save(balance);
 
         return BalanceMapper.toResponseDTO(balance);
     }

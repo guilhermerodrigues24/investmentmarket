@@ -52,7 +52,6 @@ public class AccountService {
 
         account.setName(dto.name());
         account.setDocument(dto.document());
-        // TODO balance may be an entity itself
         return AccountMapper.toResponseDTO(accountRepository.save(account));
     }
 

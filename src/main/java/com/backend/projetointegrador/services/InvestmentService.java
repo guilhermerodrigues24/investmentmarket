@@ -6,7 +6,6 @@ import com.backend.projetointegrador.domain.entities.Account;
 import com.backend.projetointegrador.domain.entities.Investment;
 import com.backend.projetointegrador.domain.entities.Product;
 import com.backend.projetointegrador.domain.mappers.InvestmentMapper;
-import com.backend.projetointegrador.repositories.AccountRepository;
 import com.backend.projetointegrador.repositories.InvestmentRepository;
 import com.backend.projetointegrador.services.exceptions.InvalidArgsException;
 import com.backend.projetointegrador.services.exceptions.ResourceNotFoundException;
@@ -50,6 +49,7 @@ public class InvestmentService {
         return InvestmentMapper.toResponseDTO(investment);
     }
 
+    //TODO fix naming for something like invest
     public InvestmentResponseDTO create(InvestmentRequestDTO requestDTO, Authentication authentication) {
         Account account = userService.findEntityByEmail(authentication.getName()).getAccount();
         if (account == null) {
