@@ -1,13 +1,11 @@
 package com.backend.projetointegrador.configs;
 
 import com.backend.projetointegrador.domain.entities.Account;
-import com.backend.projetointegrador.domain.entities.Balance;
 import com.backend.projetointegrador.domain.entities.Investment;
 import com.backend.projetointegrador.domain.entities.Product;
 import com.backend.projetointegrador.domain.entities.Role;
 import com.backend.projetointegrador.domain.entities.User;
 import com.backend.projetointegrador.repositories.AccountRepository;
-import com.backend.projetointegrador.repositories.BalanceRepository;
 import com.backend.projetointegrador.repositories.InvestmentRepository;
 import com.backend.projetointegrador.repositories.ProductRepository;
 import com.backend.projetointegrador.repositories.RoleRepository;
