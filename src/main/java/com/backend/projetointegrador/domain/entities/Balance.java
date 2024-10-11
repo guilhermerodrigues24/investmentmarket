@@ -1,11 +1,6 @@
 package com.backend.projetointegrador.domain.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +8,8 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -31,13 +28,14 @@ public class Balance implements Serializable {
 
     @OneToOne
     private Account account;
-//    @OneToMany(mappedBy = "balance")
-//    private Set<Transaction> transactions;
+    @OneToMany(mappedBy = "balance")
+    private List<Transaction> transactions;
 
     public Balance(Float amount, Account account) {
         this.amount = amount;
         this.account = account;
     }
+
 
     //region equals/hashCode
     @Override
